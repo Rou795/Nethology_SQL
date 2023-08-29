@@ -1,34 +1,38 @@
-create table if not exists Genres(
-	id serial primary key,
-	genre_name varchar(255) not null);
+CREATE TABLE IF NOT EXISTS Genres(
+	id serial PRIMARY KEY,
+	genre_name varchar(255) UNIQUE NOT NULL);
 
-create table if not exists Singers(
-	id serial primary key,
-	singer_name varchar(255) not null);
+CREATE TABLE IF NOT EXISTS Singers(
+	id serial PRIMARY KEY,
+	singer_name varchar(255) NOT NULL);
 
-create table if not exists Albums(
-	id serial primary key,
-	album_name varchar(255) not null,
-	year_foundation date not null);
+CREATE TABLE IF NOT EXISTS Albums(
+	id serial PRIMARY KEY,
+	album_name varchar(255) NOT NULL,
+	year_foundation date NOT NULL CHECK (year_foundation > date('1900-01-01')));
 
-create table if not exists AlbumSing(
-	id serial primary key,
-	album_id integer not null references Albums(id),
-	singers_id integer not null references Singers(id));
+CREATE TABLE IF NOT EXISTS AlbumSing(
+	id serial PRIMARY KEY,
+	album_id integer NOT NULL REFERENCES Albums(id),
+	singers_id integer NOT NULL REFERENCES Singers(id));
 
-create table if not exists GenSing(
-	id serial primary key,
-	genres_id integer not null references Genres(id),
-	singers_id integer not null references Singers(id));
+CREATE TABLE IF NOT EXISTS GenSing(
+	id serial PRIMARY KEY,
+	genres_id integer NOT NULL REFERENCES Genres(id),
+	singers_id integer NOT NULL REFERENCES Singers(id));
 
-create table if not exists Songs(
-	id serial primary key, 
-	album_id integer not null references Albums(id),
-	song_name varchar(255) not null,
-	duration integer not null);
+CREATE TABLE IF NOT EXISTS Songs(
+	id serial PRIMARY KEY, 
+	album_id integer NOT NULL REFERENCES Albums(id),
+	song_name varchar(255) NOT NULL,
+	duration integer NOT NULL);
 
-create table if not exists Collections(
-	id serial primary key,
-	song_id integer not null references Songs(id),
-	collections_name varchar(255) not null,
-	year_foundation date not null);
+CREATE TABLE IF NOT EXISTS Collections(
+	id serial PRIMARY KEY,
+	collections_name varchar(255) NOT NULL,
+	year_foundation date NOT NULL CHECK (year_foundation > date('1900-01-01')));
+	
+CREATE TABLE IF NOT EXISTS SongsCollect(
+	id serial PRIMARY KEY,
+	song_id integer NOT NULL REFERENCES Songs(id),
+	collect_id integer NOT NULL REFERENCES Collections(id));
